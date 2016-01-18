@@ -3,7 +3,8 @@ $(function() {
 	$.getJSON("test.json", function(data) {
 		$.each(data, function(index, tournament) {
 			dropdown.append($("<option></option>".append(data[index])));
-		})
+
+		});
 	});
 
 	$("#loadBracket").click(function() {
