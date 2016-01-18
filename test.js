@@ -1,9 +1,8 @@
 $(function() {
-	var dropdown = $("tournaments");
+	var dropdown = $("#tournaments");
 	$.getJSON("http://students.cs.byu.edu/~romrell4/tennisBracket/test.json", function(data) {
-		$.each(data, function(index, tournament) {
-			dropdown.append($("<option></option>".append(data[index])));
-
+		$.each(data, function(tournamentName, tournamentEntries) {
+			dropdown.append($("<option></option>").append(tournamentName));
 		});
 	});
 
