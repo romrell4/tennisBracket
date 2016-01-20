@@ -1,0 +1,29 @@
+<html>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="client.js"></script>
+	<style>
+		body {
+			font-family: sans-serif;
+		}
+		#bracket input {
+			border: 1px solid black;
+		}
+	</style>
+	
+	<body>
+		<h1>Tennis Bracket Challenge!</h1>
+		<label for="rounds">How many rounds in this tournament?</label>
+		<input id="rounds" type="number" value="4" />
+		<button id="createBracket">Create Bracket!</button>
+		<br />
+		<select id="tournaments" title="Tournaments"></select>
+		<button id="loadBracket">Load Bracket</button>
+		<button id="deleteBracket">Delete Bracket</button>
+		<table id="bracket">
+			<tbody id="bracketBody"></tbody>
+		</table>
+		<label for="bracketId">Bracket Id</label>
+		<input id="bracketId" type="text" />
+		<button id="saveBracket">Save Player Bracket</button>
+	</body>
+</html>
