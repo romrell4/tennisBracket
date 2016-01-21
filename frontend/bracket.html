@@ -1,16 +1,33 @@
 <!DOCTYPE html>
 <html>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<!--<link href='http://fonts.googleapis.com/css?family=Goudy+Bookletter+1911' rel='stylesheet' type='text/css'>-->
+	<link href='http://fonts.googleapis.com/css?family=Raleway:100' rel='stylesheet' type='text/css'>
 	<script src="bracket.js"></script>
 	<style>
 		body {
-			font-family: sans-serif;
+			/*font-family: "Goudy Bookletter 1911", Georgia, Arial, sans-serif;*/
+			background-color: #ffe5e5;
+		}
+		h2 {
+			font: 35px "Raleway", Helvetica, Airal, sans-serif;
+			color: #3399ff;
+		}
+		#welcomeDiv {
+			text-align: center;
+			padding-top: 200px;
+		}
+		#welcome, #selectBracket, #bracketDiv {
+			display: none;
 		}
 		#bracket {
 			border-collapse: collapse;
+			display: none;
 		}
 		#bracket input {
 			border: none;
+			font-weight: bold;
+			background-color: #ffe5e5;
 		}
 		#bracket input, select {
 			width: 100px;
@@ -18,8 +35,19 @@
 		.underline {
 			border-bottom: 1px solid black;
 		}
+		.rightline {
+			border-right: 1px solid black;
+		}
 	</style>
 	<body>
+		<div id="welcomeDiv">
+			<h2 id="welcome">Welcome to the Tennis Bracket Challenge v2.0</h2>
+			<h2 id="selectBracket">Which bracket would you like to view?</h2>
+			<div id="bracketDiv">
+				<select id="bracketId"></select>
+				<button id="loadBracket">Load Bracket</button>
+			</div>
+		</div>
 		<table id="bracket">
 			<tbody id="bracketBody"></tbody>
 		</table>

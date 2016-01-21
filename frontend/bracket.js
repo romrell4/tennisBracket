@@ -4,39 +4,69 @@
 var cells = [];
 var editable = false;
 $(function() {
-	$.getJSON("http://localhost:8080/test", function(data) {
-		var rounds = Math.log(data.length + 1) / Math.log(2);
-		createTable(rounds);
-		indexTable();
-		populateTable(data);
+	$.getJSON("http://localhost:8080", function(data) {
+		$.each(data, function(index, bracketId) {
+			$("#bracketId").append("<option>" + bracketId + "</option>");
+		});
+
+		//var welcome = $("#welcome");
+		var selectBracket = $("#selectBracket");
+
+		//welcome.fadeIn(1500).delay(1000).fadeOut(1500, function() {
+			selectBracket.fadeIn(1000, function() {
+				$("#bracketDiv").slideDown();
+			});
+		//});
+
+	});
+
+	$("#loadBracket").click(function() {
+		$.getJSON("http://localhost:8080/" + $("#bracketId").val(), function(data) {
+			var rounds = Math.log(data.length + 1) / Math.log(2);
+			createTable(rounds);
+			indexTable();
+			populateTable(data);
+			drawLines(rounds);
+		});
+
+		$("#welcomeDiv").hide(function() {
+			$("#bracket").show();
+		});
 	});
 });
 
 var createTable = function(rounds) {
 	var tbody = $("#bracketBody");
-	for (var i = 0; i < rounds; i++) {
+	for (var round = 0; round < rounds; round++) {
 		var trs = tbody.find("tr");
 		if (trs.length == 0) {
-			tbody.append(getInputElement(rounds, i));
+			tbody.append(getInputElement(rounds, round));
 		} else {
 			$.each(trs, function(row, tr) {
 				tr = $(tr);
-				tr.before(getInputElement(rounds, i));
+				tr.before(getInputElement(rounds, round));
 				tr.prepend($("<td></td>"));
 			});
-			tbody.append(getInputElement(rounds, i));
+			tbody.append(getInputElement(rounds, round));
 		}
 	}
 };
 
-var getInputElement = function(rounds, i) {
-	if (i == rounds - 1) {
-		return $("<tr></tr>").append($("<td class='underline'></td>").append($("<input readonly />")));
+var getInputElement = function(rounds, round) {
+	var row;
+	if (round == rounds - 1) {
+		row = $("<tr></tr>").append($("<td class='underline'></td>").append($("<input readonly />")));
 	} else {
-		return $("<tr></tr>").append($("<td class='underline'></td>").append($("<select></select>").change(function() {
+		row = $("<tr></tr>").append($("<td class='underline'></td>").append($("<select></select>").change(function() {
 			saveBracket($(this));
 		})));
 	}
+
+	//Add extra cells
+	for (var i = 0; i < round; i++) {
+		row.append("<td></td>");
+	}
+	return row;
 };
 
 var indexTable = function() {
@@ -58,22 +88,19 @@ var populateTable = function(entries) {
 		for (var row = 0; row < cells.length; row++) {
 			var tds = cells[row];
 
-			//Some rows will only have one td in them. This just prevents errors
-			if (tds.length > col) {
-				var input = tds[col].find("input");
-				if (input.length == 1) {
+			var input = tds[col].find("input");
+			if (input.length == 1) {
 					input.val(entries[row]);
 				}
 
-				var select = tds[col].find("select");
-				if (select.length == 1) {
+			var select = tds[col].find("select");
+			if (select.length == 1) {
 					var options = [""].concat(getOptionsForSelect(row, entries));
 					$.each(options, function(index, option) {
 						select.append($("<option></option>").append(option));
 					});
 					select.val(entries[row]);
 				}
-			}
 		}
 	}
 };
@@ -105,6 +132,23 @@ var getDifferenceFromParentRow = function(index) {
 
 var intToBinary = function(int) {
 	return (int >>> 0).toString(2);
+};
+
+var drawLines = function(cols) {
+	var drawLine = false;
+	for (var col = 0; col < cols; col++) {
+		for (var row = 0; row < cells.length; row++) {
+			var tds = cells[row];
+
+			if (drawLine && (col != cols - 1)) {
+				tds[col].addClass("rightline");
+			}
+
+			if (cells[row][col].hasClass("underline")) {
+				drawLine = !drawLine;
+			}
+		}
+	}
 };
 
 var saveBracket = function(select) {
