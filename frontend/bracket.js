@@ -9,14 +9,14 @@ $(function() {
 			$("#bracketId").append("<option>" + bracketId + "</option>");
 		});
 
-		//var welcome = $("#welcome");
+		var welcome = $("#welcome");
 		var selectBracket = $("#selectBracket");
 
-		//welcome.fadeIn(1500).delay(1000).fadeOut(1500, function() {
+		welcome.fadeIn(1500).delay(1000).fadeOut(1500, function() {
 			selectBracket.fadeIn(1000, function() {
 				$("#bracketDiv").slideDown();
 			});
-		//});
+		});
 
 	});
 
